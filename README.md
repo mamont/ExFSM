@@ -1,2 +1,5 @@
-ExFSM
-=====
+  ExFSM
+=================================
+
+QStateMachine wrapper
+
