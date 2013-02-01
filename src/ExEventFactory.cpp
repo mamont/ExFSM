@@ -46,3 +46,4 @@ QEvent * ExEventFactory::parseEvent(QVariant const& json) const
 }
 
 } // ExFSM
+
