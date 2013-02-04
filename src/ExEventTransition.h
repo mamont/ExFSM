@@ -46,10 +46,6 @@ protected:
 
 public:
     ExEventTransition(QState * source);
-
-    ExEventTransition(QEvent::Type, QState * source, QState * target);
-    ExEventTransition(QEvent::Type, QState * source, QState * target, ExTransitionActionsSequence const& actions);
-
     ExEventTransition(QObject * object, QEvent::Type, QState * source, QState * target);
     ExEventTransition(QObject * object, QEvent::Type, QState * source, QState * target, ExTransitionActionsSequence const& actions);
 

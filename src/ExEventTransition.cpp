@@ -59,30 +59,6 @@ ExEventTransition::ExEventTransition(QState * source)
 }
 
 //--------------------------------------------------------------------------------------------------
-ExEventTransition::ExEventTransition(QEvent::Type type, QState * source, QState * target)
-    : QEventTransition(source)
-    , m_nestedEventType(type)
-{
-    setEventType(QEvent::StateMachineWrapped);
-
-    if(target)
-        setTargetState(target);
-
-}
-
-//--------------------------------------------------------------------------------------------------
-ExEventTransition::ExEventTransition(QEvent::Type type, QState * source, QState * target, ExTransitionActionsSequence const& actions)
-    : QEventTransition(source)
-    , m_nestedEventType(type)
-    , m_actions(actions)
-{
-    setEventType(QEvent::StateMachineWrapped);
-
-    if(target)
-        setTargetState(target);
-}
-
-//--------------------------------------------------------------------------------------------------
 ExEventTransition::ExEventTransition(QObject * object, QEvent::Type type, QState * source, QState * target)
     : QEventTransition(object, QEvent::StateMachineWrapped, source)
     , m_nestedEventType(type)
