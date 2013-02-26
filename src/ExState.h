@@ -14,7 +14,7 @@ class ExState : public QState
 
 public:
     typedef quint32 Flag;
-    static const int None = 0;
+    static constexpr QState * None = nullptr;
 
     explicit ExState(QString const& name = QString::null, QString const& prefix = QString::null);
     explicit ExState(QState * parent, QString const& name = QString::null, QString const& prefix = QString::null);
