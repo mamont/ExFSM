@@ -51,6 +51,8 @@ public:
 
     virtual ~ExEventTransition();
 
+    virtual void setActions(ExTransitionActionsSequence const& actions);
+
 Q_SIGNALS:
     void triggered(QEvent * e);
 

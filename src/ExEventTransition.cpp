@@ -84,6 +84,18 @@ ExEventTransition::~ExEventTransition()
 }
 
 //--------------------------------------------------------------------------------------------------
+void ExEventTransition::setActions(ExTransitionActionsSequence const& actions)
+{
+    m_actions = actions;
+
+    Q_FOREACH(ExTransitionAction const& action, m_actions)
+    {
+        if(action.isValid())
+            connect(this, SIGNAL(triggered(QEvent *)), action.object(), action.method());
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
 bool ExEventTransition::eventTest(QEvent * ev)
 {
     Q_ASSERT(ev);
