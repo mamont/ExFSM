@@ -5,6 +5,7 @@
 #include <QtCore/QVariant>
 
 #include "ExEvent.h"
+#include "ExCommon.h"
 
 class QStateMachine;
 
@@ -15,7 +16,7 @@ namespace ExFSM {
  *
  * Construct event objects
  */
-class ExEventFactory : public QObject
+class EX_FSM_EXPORT ExEventFactory : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(ExEventFactory)

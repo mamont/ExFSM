@@ -2,13 +2,14 @@
 #define __EX_FSM_STATEMACHINE_H__
 
 #include <QtCore/QStateMachine>
+#include "ExCommon.h"
 
 namespace ExFSM {
 
 class ExEvent;
 class ExFlag;
 
-class ExStateMachine : public QStateMachine
+class EX_FSM_EXPORT ExStateMachine : public QStateMachine
 {
     Q_OBJECT
 

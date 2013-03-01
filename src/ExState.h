@@ -6,10 +6,11 @@
 #include <QtCore/QString>
 
 #include "ExFlags.h"
+#include "ExCommon.h"
 
 namespace ExFSM {
 
-class ExState : public QState
+class EX_FSM_EXPORT ExState : public QState
 {
 
 public:

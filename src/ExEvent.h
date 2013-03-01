@@ -4,10 +4,11 @@
 #include <QtCore/QEvent>
 #include <QtCore/QStateMachine>
 
+#include "ExCommon.h"
+
 namespace ExFSM {
 
-
-class ExEvent: public QEvent
+class EX_FSM_EXPORT ExEvent: public QEvent
 {
 public:
     static const QEvent::Type None;
@@ -31,7 +32,7 @@ public:
 };
 
 
-class ExWrappedEvent : public QStateMachine::WrappedEvent
+class EX_FSM_EXPORT ExWrappedEvent : public QStateMachine::WrappedEvent
 {
 
 public:

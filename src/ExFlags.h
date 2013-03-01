@@ -2,10 +2,11 @@
 #define __EX_FSM_FLAGS_H__
 
 #include <QtCore/QtGlobal>
+#include "ExCommon.h"
 
 namespace ExFSM {
 
-class ExFlag
+class EX_FSM_EXPORT ExFlag
 {
     quint64 m_flag;
     friend class ExFlags;
@@ -27,7 +28,7 @@ public:
 
 
 
-class ExFlags
+class EX_FSM_EXPORT ExFlags
 {
     quint64 m_flags;
 

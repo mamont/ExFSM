@@ -4,10 +4,12 @@
 #include <QtCore/QEvent>
 #include <QtCore/QEventTransition>
 
+#include "ExCommon.h"
+
 namespace ExFSM {
 
 //--------------------------------------------------------------------------------------------------
-class ExTransitionAction
+class EX_FSM_EXPORT ExTransitionAction
 {
     QObject * m_obj;
     QByteArray m_method;
@@ -24,7 +26,7 @@ public:
 };
 
 //--------------------------------------------------------------------------------------------------
-class ExTransitionActionsSequence : public QList<ExTransitionAction>
+class EX_FSM_EXPORT ExTransitionActionsSequence : public QList<ExTransitionAction>
 {
 
 public:
@@ -34,7 +36,7 @@ public:
 };
 
 //--------------------------------------------------------------------------------------------------
-class ExEventTransition : public QEventTransition
+class EX_FSM_EXPORT ExEventTransition : public QEventTransition
 {
     Q_OBJECT
     int m_nestedEventType;

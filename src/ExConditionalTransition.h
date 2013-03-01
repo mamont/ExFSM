@@ -4,10 +4,11 @@
 #include "ExEventTransition.h"
 
 #include <functional>
+#include "ExCommon.h"
 
 namespace ExFSM { 
 
-class ExConditionalTransition : public ExEventTransition
+class EX_FSM_EXPORT ExConditionalTransition : public ExEventTransition
 {
     Q_OBJECT
 
