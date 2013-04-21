@@ -3,7 +3,7 @@
 
 #include <QtCore/QtGlobal>
 
-#ifdef EX_FSM_LIB
+#ifdef EXFSM_LIBRARY_EXPORT
     #define EX_FSM_EXPORT Q_DECL_EXPORT
 #else
     #define EX_FSM_EXPORT Q_DECL_IMPORT
