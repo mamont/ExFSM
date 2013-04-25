@@ -47,12 +47,9 @@ ExTransitionActionsSequence::ExTransitionActionsSequence(ExTransitionAction cons
 
 ExTransitionActionsSequence & ExTransitionActionsSequence::operator<<(ExTransitionAction const & o)
 {
-    this->append(o);
+    m_actions.append(o);
     return * this;
 }
-
-
-
 
 
 
@@ -96,7 +93,7 @@ void ExEventTransition::setActions(ExTransitionActionsSequence const& actions)
 {
     m_actions = actions;
 
-    Q_FOREACH(ExTransitionAction const& action, m_actions)
+    Q_FOREACH(ExTransitionAction const& action, m_actions.actions())
     {
         if(action.isValid())
             connect(this, SIGNAL(triggered(QEvent *)), action.object(), action.method());
@@ -135,9 +132,9 @@ void ExEventTransition::onTransition(QEvent *event)
         ev = wrapped->event();
     }
 
-    if(!m_actions.isEmpty())
+    if(!m_actions.actions().isEmpty())
     {
-        Q_FOREACH(ExTransitionAction const& action, m_actions)
+        Q_FOREACH(ExTransitionAction const& action, m_actions.actions())
         {
             QMetaObject::invokeMethod(action.object(), action.method(), action.connectionType(), Q_ARG(QEvent*, ev));
         }
