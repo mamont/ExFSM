@@ -4,7 +4,9 @@
 
 namespace ExFSM {
 
+#ifdef WIN32
 const QState * ExState::None = 0;
+#endif
 
 ExState::ExState(QString const& name, QString const& prefix)
     : m_name(name)
