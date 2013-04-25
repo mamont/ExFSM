@@ -16,13 +16,16 @@ class EX_FSM_EXPORT ExTransitionAction
     Qt::ConnectionType m_type;
 
 public:
+    explicit ExTransitionAction();
+    ExTransitionAction(ExTransitionAction const& other);
     ExTransitionAction(QObject * obj, QByteArray const& method, Qt::ConnectionType type = Qt::AutoConnection);
-    explicit ExTransitionAction(ExTransitionAction const& other);
 
     QObject * object() const { return m_obj; }
     const char * method() const { return m_method.constData(); }
     Qt::ConnectionType connectionType() const { return m_type; }
     bool isValid() const;
+
+    bool operator==(const ExTransitionAction & o) const { return false; }
 };
 
 //--------------------------------------------------------------------------------------------------
@@ -31,7 +34,7 @@ class EX_FSM_EXPORT ExTransitionActionsSequence : public QList<ExTransitionActio
 
 public:
     explicit ExTransitionActionsSequence();
-    ExTransitionActionsSequence(ExTransitionAction const &);
+    explicit ExTransitionActionsSequence(ExTransitionAction const &);
     ExTransitionActionsSequence & operator<<(ExTransitionAction const &);
 };
 
@@ -39,6 +42,7 @@ public:
 class EX_FSM_EXPORT ExEventTransition : public QEventTransition
 {
     Q_OBJECT
+
     int m_nestedEventType;
     ExTransitionActionsSequence m_actions;
 

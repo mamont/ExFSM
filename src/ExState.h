@@ -15,8 +15,12 @@ class EX_FSM_EXPORT ExState : public QState
 
 public:
     typedef quint32 Flag;
-    static constexpr QState * None = nullptr;
 
+#ifdef WIN32
+    static const QState * None;
+#else
+    static constexpr QState * None = nullptr;
+#endif
     explicit ExState(QString const& name = QString::null, QString const& prefix = QString::null);
     explicit ExState(QState * parent, QString const& name = QString::null, QString const& prefix = QString::null);
 

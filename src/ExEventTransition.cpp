@@ -6,6 +6,12 @@
 namespace ExFSM {
 
 //--------------------------------------------------------------------------------------------------
+ExTransitionAction::ExTransitionAction()
+{
+    ;
+}
+
+//--------------------------------------------------------------------------------------------------
 ExTransitionAction::ExTransitionAction(QObject * obj, QByteArray const& slot, Qt::ConnectionType type)
     : m_obj(obj)
     , m_method(slot)
@@ -14,6 +20,7 @@ ExTransitionAction::ExTransitionAction(QObject * obj, QByteArray const& slot, Qt
     ;
 }
 
+//--------------------------------------------------------------------------------------------------
 ExTransitionAction::ExTransitionAction(ExTransitionAction const& other)
 {
     m_obj = other.m_obj;
@@ -21,6 +28,7 @@ ExTransitionAction::ExTransitionAction(ExTransitionAction const& other)
     m_type = other.m_type;
 }
 
+//--------------------------------------------------------------------------------------------------
 bool ExTransitionAction::isValid() const
 {
     return (m_obj && !m_method.isEmpty());

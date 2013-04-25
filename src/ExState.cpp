@@ -4,6 +4,8 @@
 
 namespace ExFSM {
 
+const QState * ExState::None = 0;
+
 ExState::ExState(QString const& name, QString const& prefix)
     : m_name(name)
     , m_prefix(prefix)
