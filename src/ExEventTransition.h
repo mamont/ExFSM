@@ -29,13 +29,16 @@ public:
 };
 
 //--------------------------------------------------------------------------------------------------
-class EX_FSM_EXPORT ExTransitionActionsSequence : public QList<ExTransitionAction>
+class EX_FSM_EXPORT ExTransitionActionsSequence
 {
+    QList<ExTransitionAction> m_actions;
 
 public:
     explicit ExTransitionActionsSequence();
     explicit ExTransitionActionsSequence(ExTransitionAction const &);
     ExTransitionActionsSequence & operator<<(ExTransitionAction const &);
+
+    QList<ExTransitionAction> const & actions() const { return m_actions; }
 };
 
 //--------------------------------------------------------------------------------------------------
