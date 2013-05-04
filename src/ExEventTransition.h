@@ -31,6 +31,7 @@ public:
 //--------------------------------------------------------------------------------------------------
 class EX_FSM_EXPORT ExTransitionActionsSequence
 {
+protected:
     QList<ExTransitionAction> m_actions;
 
 public:
