@@ -48,7 +48,7 @@ void ExState::onEntry( QEvent* e )
         state = parent->name() + "->" + state;
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
-    qDebug() << m_prefix << "Entering state:" << state;
+    qDebug() << m_prefix << " >>> Entering state:" << state;
 
     QState::onEntry(e);
 }
@@ -64,7 +64,7 @@ void ExState::onExit( QEvent* e )
         state = parent->name() + "->" + state;
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
-    qDebug() << m_prefix << "Exiting state:" << state;
+    qDebug() << m_prefix << " <<< Exiting state:" << state;
 
     QState::onExit(e);
 }
