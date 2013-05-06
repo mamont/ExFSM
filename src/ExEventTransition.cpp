@@ -14,26 +14,30 @@ ExTransitionAction::ExTransitionAction()
 }
 
 //--------------------------------------------------------------------------------------------------
-ExTransitionAction::ExTransitionAction(QObject * obj, QByteArray const& slot, Qt::ConnectionType type)
+ExTransitionAction::ExTransitionAction(QObject * obj, QByteArray const& methodSignature, Qt::ConnectionType type)
     : m_obj(obj)
-    , m_method(slot)
+    , m_methodSignature(QMetaObject::normalizedSignature(methodSignature))
     , m_type(type)
 {
-    ;
+    QMetaObject const * mo = obj->metaObject();
+    const int methodIdx = mo->indexOfMethod(m_methodSignature);
+
+    m_metaMethod = mo->method(methodIdx);
 }
 
 //--------------------------------------------------------------------------------------------------
 ExTransitionAction::ExTransitionAction(ExTransitionAction const& other)
 {
     m_obj = other.m_obj;
-    m_method = other.m_method;
+    m_methodSignature = other.m_methodSignature;
     m_type = other.m_type;
+    m_metaMethod = other.m_metaMethod;
 }
 
 //--------------------------------------------------------------------------------------------------
 bool ExTransitionAction::isValid() const
 {
-    return (m_obj && !m_method.isEmpty());
+    return (m_obj && m_metaMethod.isValid());
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -42,11 +46,13 @@ ExTransitionActionsSequence::ExTransitionActionsSequence()
     ;
 }
 
+//--------------------------------------------------------------------------------------------------
 ExTransitionActionsSequence::ExTransitionActionsSequence(ExTransitionAction const&)
 {
     ;
 }
 
+//--------------------------------------------------------------------------------------------------
 ExTransitionActionsSequence & ExTransitionActionsSequence::operator<<(ExTransitionAction const & o)
 {
     m_actions.append(o);
@@ -98,7 +104,7 @@ void ExEventTransition::setActions(ExTransitionActionsSequence const& actions)
     Q_FOREACH(ExTransitionAction const& action, m_actions.actions())
     {
         if(action.isValid())
-            connect(this, SIGNAL(triggered(QEvent *)), action.object(), action.method());
+            connect(this, SIGNAL(triggered(QEvent *)), action.object(), action.methodSignature());
     }
 }
 
@@ -136,27 +142,17 @@ void ExEventTransition::onTransition(QEvent *event)
 
     if(!m_actions.actions().isEmpty())
     {
-        QRegExp rx;
-        rx.setCaseSensitivity(Qt::CaseInsensitive);
-
-        rx.setPattern("[0-9]([^\(\)]+)(\(.*\))?");
-        rx.setMinimal(false);
-
         Q_FOREACH(ExTransitionAction const& action, m_actions.actions())
         {
-            QString method = QString(action.method());
-            if (rx.indexIn(method)!=-1)
-            {
-                method = rx.cap(1);
-            }
-            QMetaObject::invokeMethod(action.object(), method.toStdString().c_str(), action.connectionType(), Q_ARG(QEvent*, ev));
+            action.method().invoke(action.object()
+                                    , action.connectionType()
+                                    , Q_ARG(QEvent*, ev));
         }
     }
 
-    //QEventTransition::onTransition(event);
     QEventTransition::onTransition(ev);
-
     Q_EMIT triggered(ev);
 }
 
 } // ExFSM
+
