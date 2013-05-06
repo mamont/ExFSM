@@ -2,6 +2,8 @@
 
 #include <QtCore/QState>
 #include <QtCore/QStateMachine>
+#include <QtCore/QRegExp>
+#include <QDebug>
 
 namespace ExFSM {
 
@@ -134,9 +136,20 @@ void ExEventTransition::onTransition(QEvent *event)
 
     if(!m_actions.actions().isEmpty())
     {
+        QRegExp rx;
+        rx.setCaseSensitivity(Qt::CaseInsensitive);
+
+        rx.setPattern("[0-9]([^\(\)]+)(\(.*\))?");
+        rx.setMinimal(false);
+
         Q_FOREACH(ExTransitionAction const& action, m_actions.actions())
         {
-            QMetaObject::invokeMethod(action.object(), action.method(), action.connectionType(), Q_ARG(QEvent*, ev));
+            QString method = QString(action.method());
+            if (rx.indexIn(method)!=-1)
+            {
+                method = rx.cap(1);
+            }
+            QMetaObject::invokeMethod(action.object(), method.toStdString().c_str(), action.connectionType(), Q_ARG(QEvent*, ev));
         }
     }
 
