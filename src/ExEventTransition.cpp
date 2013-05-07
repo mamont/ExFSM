@@ -20,8 +20,10 @@ ExTransitionAction::ExTransitionAction(QObject * obj, QByteArray const& methodSi
     , m_type(type)
 {
     QMetaObject const * mo = obj->metaObject();
-    const int methodIdx = mo->indexOfMethod(m_methodSignature);
+    const int methodIdx = mo->indexOfMethod(m_methodSignature.mid(1));
 
+    Q_ASSERT_X(methodIdx >= 0, "ExFSM::ExTransitionAction", "Method not found " + m_methodSignature);
+    
     m_metaMethod = mo->method(methodIdx);
 }
 
