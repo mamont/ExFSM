@@ -6,6 +6,7 @@
 #include <ExFSM/ExState>
 #include <ExFSM/ExEvent>
 #include <ExFSM/ExEventTransition>
+#include <ExFSM/ExMultiEventTransition>
 
 using namespace ExFSM;
 
@@ -102,4 +103,38 @@ void ExFsmSmokeTests::check_RePostOfNotSuitableEvents()
 }
 
 
+//------------------------------------------------------------------------------
+void ExFsmSmokeTests::check_MultiEventTransition()
+{
+    /*
+    QScopedPointer<ExStateMachine> stateMachine(new ExStateMachine());
+
+    ExState * initialState = new ExState("Initial State");
+    ExState * finalState = new ExState("Final State");
+
+    stateMachine->addState(initialState);
+    stateMachine->addState(finalState);
+    stateMachine->setInitialState(initialState);
+
+    QList<QEvent::Type> events;
+    events << Ev_TestEventOne::eventType()
+           << Ev_TestEventTwo::eventType();
+
+    new ExMultiEventTransition(this, events, initialState, finalState);
+    stateMachine->start();
+    QTestEventLoop::instance().enterLoop(1);
+
+    QSignalSpy spy(finalState, SIGNAL(entered()));
+
+    stateMachine->postEvent(new Ev_TestEventTwo());
+    QTestEventLoop::instance().enterLoop(1);
+
+    QCOMPARE(spy.count(), 0);
+
+    stateMachine->postEvent(new Ev_TestEventOne());
+    QTestEventLoop::instance().enterLoop(1);
+
+    QCOMPARE(spy.count(), 1);
+    */
+}
 

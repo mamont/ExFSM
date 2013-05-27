@@ -9,7 +9,7 @@ SET(ExFSM_SRCS
         ExStateMachine.cpp
         ExEventFactory.cpp
         ExEventTransition.cpp
-#        ExMultiEventTransition.cpp
+        ExMultiEventTransition.cpp
         ExConditionalTransition.cpp
         ExEvent.cpp
         ExFlags.cpp
