@@ -115,8 +115,24 @@ bool ExEventTransition::eventTest(QEvent * ev)
 {
     Q_ASSERT(ev);
 
+#ifdef _EX_FSM_DEBUG_
+    qDebug() << "eventTest:" << ev->type() << " : " << m_nestedEventType << " : " << QEvent::StateMachineWrapped;
+#endif
+
     if(ev->type() != QEvent::StateMachineWrapped)
-		return QEventTransition::eventTest(ev);
+    {
+		const bool res = QEventTransition::eventTest(ev);
+        if(res)
+        {
+            ev->setAccepted(true);
+        }
+
+#ifdef _EX_FSM_DEBUG_
+        qDebug() << "Regular Result " << res;
+#endif
+
+        return res;
+    }
 
     QStateMachine::WrappedEvent * wrapped = dynamic_cast<QStateMachine::WrappedEvent *>(ev);
     Q_ASSERT(wrapped);
@@ -125,8 +141,17 @@ bool ExEventTransition::eventTest(QEvent * ev)
 	Q_ASSERT(rawEvent);
 
     if(rawEvent->type() == m_nestedEventType)
+    {
+        ev->setAccepted(true);
+#ifdef _EX_FSM_DEBUG_
+        qDebug() << "Result : true";
+#endif
 		return true;
+    }
 
+#ifdef _EX_FSM_DEBUG_
+    qDebug() << "Result : false";
+#endif
     return false;
 }
 

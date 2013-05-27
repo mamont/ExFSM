@@ -1,4 +1,7 @@
 #include "ExStateMachine.h"
+#include "ExStateMachine_p.h"
+
+#include <QtCore/QDebug>
 
 #include "ExEvent.h"
 #include "ExFlags.h"
@@ -10,7 +13,7 @@ namespace ExFSM {
 ExStateMachine::ExStateMachine(QObject * parent)
     : QStateMachine(parent)
 {
-    ;
+    qRegisterMetaType<ExEvent*>("ExEvent*");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -52,5 +55,43 @@ void ExStateMachine::postEvent(ExEvent * event, EventPriority priority)
 {
     QStateMachine::postEvent(new ExWrappedEvent(event), priority);
 }
+
+//--------------------------------------------------------------------------------------------------
+void ExStateMachine::beginSelectTransitions(QEvent *event)
+{
+    QStateMachine::beginSelectTransitions(event);
+
+    if(event->type() != QEvent::None)
+        event->setAccepted(false);
+}
+
+//--------------------------------------------------------------------------------------------------
+void ExStateMachine::endSelectTransitions(QEvent *event)
+{
+    if(event->type() != QEvent::None)
+    {
+        if(!event->isAccepted())
+        {
+            QSet<QAbstractState*> const config = configuration();
+            QSet<QAbstractState*>::const_iterator it = config.constBegin();
+            for(; it != config.constEnd(); ++it)
+            {
+                ExState * exstate = qobject_cast<ExState *>(*it);
+                if(!exstate)
+                    continue;
+
+                exstate->onUnexpectedEvent(event);
+            }
+
+        }
+        else
+        {
+            //qDebug() << "Accepted!";
+        }
+    }
+
+    QStateMachine::endSelectTransitions(event);
+}
+
 
 } // ExFSM

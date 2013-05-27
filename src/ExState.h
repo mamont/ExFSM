@@ -3,6 +3,7 @@
 
 #include <QtCore/QSet>
 #include <QtCore/QState>
+#include <QtCore/QEvent>
 #include <QtCore/QString>
 
 #include "ExFlags.h"
@@ -10,9 +11,13 @@
 
 namespace ExFSM {
 
+class ExEvent;
+
 class EX_FSM_EXPORT ExState : public QState
 {
-
+    Q_OBJECT
+    
+    friend class ExStateMachine;
 public:
     typedef quint32 Flag;
 
@@ -23,21 +28,26 @@ public:
 #endif
     explicit ExState(QString const& name = QString::null, QString const& prefix = QString::null);
     explicit ExState(QState * parent, QString const& name = QString::null, QString const& prefix = QString::null);
+    virtual ~ExState();
 
-    QString const & name() const { return m_name; }
-    ExFlags const & flags() const { return m_flags; }
+    QString const & name() const;
+    ExFlags const & flags() const;
 
     void setFlags(ExFlags const & flags);
     void unsetFlags(ExFlags const & flags);
 
+    void addToSavedEventsList(QEvent::Type type);
+
+Q_SIGNALS:
+    void unexpectedEvent( ExEvent* e );
+
 protected:
     virtual void onEntry( QEvent* e );
     virtual void onExit( QEvent* e );
+    virtual void onUnexpectedEvent( QEvent * );
 
 private:
-    QString m_name;
-    QString m_prefix;
-    ExFlags m_flags;
+    void * m_pImpl;
 };
 
 } // ExFSM

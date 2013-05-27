@@ -13,9 +13,10 @@ class EX_FSM_EXPORT ExEvent: public QEvent
 public:
     static const QEvent::Type None;
 
-    explicit ExEvent(QEvent::Type type) : QEvent(type) {;}
-};
+    explicit ExEvent(QEvent::Type type = QEvent::None) : QEvent(type) {;}
 
+    static ExEvent * fromQEvent(QEvent *);
+};
 
 
 template <typename T>
@@ -40,6 +41,8 @@ public:
 };
 
 } // ExFSM
+
+Q_DECLARE_METATYPE(ExFSM::ExEvent*);
 
 #endif //!__EX_FSM_EVENT_H__
 

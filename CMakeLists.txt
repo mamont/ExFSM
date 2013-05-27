@@ -8,4 +8,6 @@ ENDIF(UNIX)
 
 add_subdirectory(src)
 
+INCLUDE_DIRECTORIES(include)
+add_subdirectory(tests)
 
