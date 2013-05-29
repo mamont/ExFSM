@@ -4,6 +4,8 @@
 
 #include <QtCore/QDebug>
 
+#define _EX_FSM_DEBUG_
+
 namespace ExFSM {
 
 struct ExStatePrivate 
@@ -73,7 +75,7 @@ void ExState::onEntry( QEvent* e )
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
 #ifdef _EX_FSM_DEBUG_
-    qDebug() << " >>> Entering state:" << state;
+    qDebug() << prefix() << " >>> Entering state:" << state;
 #endif
 
     QState::onEntry(e);
@@ -91,7 +93,7 @@ void ExState::onExit( QEvent* e )
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
 #ifdef _EX_FSM_DEBUG_
-    qDebug() << " <<< Exiting state:" << state;
+    qDebug() << prefix() << " <<< Exiting state:" << state;
 #endif
 
     QState::onExit(e);
@@ -134,6 +136,12 @@ void ExState::onUnexpectedEvent( QEvent * e )
 QString const & ExState::name() const
 {
     return static_cast<ExStatePrivate*>(m_pImpl)->m_name;
+}
+
+//-----------------------------------------------------------------------------
+QString const & ExState::prefix() const
+{
+    return static_cast<ExStatePrivate*>(m_pImpl)->m_prefix;
 }
 
 //-----------------------------------------------------------------------------

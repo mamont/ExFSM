@@ -31,6 +31,7 @@ public:
     virtual ~ExState();
 
     QString const & name() const;
+    QString const & prefix() const;
     ExFlags const & flags() const;
 
     void setFlags(ExFlags const & flags);
