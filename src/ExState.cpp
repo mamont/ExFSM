@@ -71,7 +71,7 @@ void ExState::onEntry( QEvent* e )
     ExState* parent = dynamic_cast<ExState*>( parentState() );
     while ( parent != 0 )
     {
-        //state = parent->name() + "->" + state;
+        state = parent->name() + "->" + state;
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
 #ifdef _EX_FSM_DEBUG_
@@ -89,7 +89,7 @@ void ExState::onExit( QEvent* e )
     ExState* parent = dynamic_cast<ExState*>( parentState() );
     while ( parent != 0 )
     {
-        //state = parent->name() + "->" + state;
+        state = parent->name() + "->" + state;
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
 #ifdef _EX_FSM_DEBUG_
