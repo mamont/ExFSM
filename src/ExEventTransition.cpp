@@ -1,9 +1,9 @@
 #include "ExEventTransition.h"
+#include "ExLogger.h"
 
 #include <QtCore/QState>
 #include <QtCore/QStateMachine>
 #include <QtCore/QRegExp>
-#include <QDebug>
 
 namespace ExFSM {
 
@@ -116,7 +116,7 @@ bool ExEventTransition::eventTest(QEvent * ev)
     Q_ASSERT(ev);
 
 #ifdef _EX_FSM_DEBUG_
-    qDebug() << "eventTest:" << ev->type() << " : " << m_nestedEventType << " : " << QEvent::StateMachineWrapped;
+    LOG_D("ExEventTransition") << "eventTest:" << ev->type() << " : " << m_nestedEventType << " : " << QEvent::StateMachineWrapped;
 #endif
 
     if(ev->type() != QEvent::StateMachineWrapped)
@@ -128,7 +128,7 @@ bool ExEventTransition::eventTest(QEvent * ev)
         }
 
 #ifdef _EX_FSM_DEBUG_
-        qDebug() << "Regular Result " << res;
+        LOG_D("ExEventTransition") << "Regular Result " << res;
 #endif
 
         return res;
@@ -144,13 +144,13 @@ bool ExEventTransition::eventTest(QEvent * ev)
     {
         ev->setAccepted(true);
 #ifdef _EX_FSM_DEBUG_
-        qDebug() << "Result : true";
+        LOG_D("ExEventTransition") << "Result : true";
 #endif
 		return true;
     }
 
 #ifdef _EX_FSM_DEBUG_
-    qDebug() << "Result : false";
+    LOG_D("ExEventTransition") << "Result : false";
 #endif
     return false;
 }

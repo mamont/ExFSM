@@ -1,7 +1,7 @@
 #include "ExMultiEventTransition.h"
 
 #include "ExStateMachine.h"
-#include <QtCore/QDebug>
+#include "ExLogger.h"
 
 namespace ExFSM {
 
@@ -11,7 +11,9 @@ ExMultiEventTransition::ExMultiEventTransition(QObject * parent, QList<QEvent::T
     , m_events(events)
 {
     if(m_events.isEmpty())
-        qWarning() << "Event types list is empty. Emtpy won't ever be triggered";
+    {
+        LOG_W("ExMultiEventTransition") << "event types list is empty. Emtpy won't ever be triggered";
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -38,13 +40,13 @@ bool ExMultiEventTransition::eventTest(QEvent * ev)
         ev->setAccepted(true);
 
 #ifdef _EX_FSM_DEBUG_
-        qDebug() << "Result : true";
+        LOG_D("ExMultiEventTransition") << "Result : true";
 #endif
 		return true;
     }
 
 #ifdef _EX_FSM_DEBUG_
-    qDebug() << "Result : false";
+    LOG_D("ExMultiEventTransition") << "Result : false";
 #endif
 */
     return false;

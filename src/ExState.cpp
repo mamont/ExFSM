@@ -1,10 +1,7 @@
 #include "ExState.h"
 #include "ExEvent.h"
 #include "ExStateMachine.h"
-
-#include <QtCore/QDebug>
-
-#define _EX_FSM_DEBUG_
+#include "ExLogger.h"
 
 namespace ExFSM {
 
@@ -67,6 +64,7 @@ void ExState::onEntry( QEvent* e )
     //Q_EMIT entered(e);
 
     // Print out the state we are entering and it's parents
+#ifdef _EX_FSM_PRINT_INFO_
     QString state = name();
     ExState* parent = dynamic_cast<ExState*>( parentState() );
     while ( parent != 0 )
@@ -74,8 +72,8 @@ void ExState::onEntry( QEvent* e )
         state = parent->name() + "->" + state;
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
-#ifdef _EX_FSM_DEBUG_
-    qDebug() << prefix() << " >>> Entering state:" << state;
+
+    LOG_D("ExState") << prefix() << " >>> Entering state:" << state;
 #endif
 
     QState::onEntry(e);
@@ -85,6 +83,7 @@ void ExState::onEntry( QEvent* e )
 void ExState::onExit( QEvent* e )
 {
     // Print out the state we are exiting and it's parents
+#ifdef _EX_FSM_PRINT_INFO_
     QString state = name();
     ExState* parent = dynamic_cast<ExState*>( parentState() );
     while ( parent != 0 )
@@ -92,16 +91,15 @@ void ExState::onExit( QEvent* e )
         state = parent->name() + "->" + state;
         parent = dynamic_cast<ExState*>( parent->parentState() );
     }
-#ifdef _EX_FSM_DEBUG_
-    qDebug() << prefix() << " <<< Exiting state:" << state;
+    LOG_D("ExState") << prefix() << " <<< Exiting state:" << state;
 #endif
 
     QState::onExit(e);
 
     Q_FOREACH(QEvent const & savedEvent, static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents)
     {
-#ifdef _EX_FSM_DEBUG_
-        qDebug() << name() << " post: " << savedEvent.type();
+#ifdef _EX_FSM_PRINT_INFO_
+        LOG_D("ExState") << name() << " post: " << savedEvent.type();
 #endif
         static_cast<ExStateMachine*>(machine())->postEvent(new QEvent(savedEvent));
     }
@@ -115,14 +113,14 @@ void ExState::onUnexpectedEvent( QEvent * e )
     if(!exEvent)
         return;
 
-#ifdef _EX_FSM_DEBUG_
-    qDebug() << name() << " unexpected event : " << exEvent->type();
+#ifdef _EX_FSM_PRINT_INFO_
+    LOG_D("ExState") << name() << " unexpected event : " << exEvent->type();
 #endif
 
     if((static_cast<ExStatePrivate*>(m_pImpl)->m_savedEventTypes.contains(exEvent->type())))
     {
-#ifdef _EX_FSM_DEBUG_
-        qDebug() << name() << " Save unexpected event : " << exEvent->type();
+#ifdef _EX_FSM_PRINT_INFO_
+        LOG_D("ExState") << name() << " Save unexpected event : " << exEvent->type();
 #endif
         static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents.append(*exEvent);
     }
