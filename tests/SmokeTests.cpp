@@ -7,6 +7,7 @@
 #include <ExFSM/ExEvent>
 #include <ExFSM/ExEventTransition>
 #include <ExFSM/ExMultiEventTransition>
+#include <ExFSM/ExConditionalTransition>
 
 using namespace ExFSM;
 
@@ -102,6 +103,53 @@ void ExFsmSmokeTests::check_RePostOfNotSuitableEvents()
     QCOMPARE(spy.count(), 1);
 }
 
+//------------------------------------------------------------------------------
+void ExFsmSmokeTests::check_ConditionalTransition()
+{
+    QScopedPointer<ExStateMachine> stateMachine(new ExStateMachine());
+
+    ExState * initialState = new ExState("Initial State");
+    ExState * middleState = new ExState("Middle State");
+    ExState * deadLockState = new ExState("DeadLock State");
+    ExState * finalState = new ExState("Final State");
+
+    stateMachine->addState(initialState);
+    stateMachine->addState(middleState);
+    stateMachine->addState(deadLockState);
+    stateMachine->addState(finalState);
+
+    stateMachine->setInitialState(initialState);
+
+    new ExEventTransition(this, Ev_TestEventOne::eventType(), initialState, middleState);
+
+    new ExConditionalTransition(this
+                                       , Ev_TestEventTwo::eventType()
+                                       , middleState
+                                       , deadLockState
+                                       , [this](QEvent * ev) { return false; });
+
+    new ExConditionalTransition(this
+                                       , Ev_TestEventThree::eventType()
+                                       , middleState
+                                       , finalState
+                                       , [this](QEvent * ev) { return true; });
+
+    QSignalSpy spy(finalState, SIGNAL(entered()));
+
+    stateMachine->start();
+    QTestEventLoop::instance().enterLoop(1);
+
+    stateMachine->postEvent(new Ev_TestEventOne());
+    QTestEventLoop::instance().enterLoop(1);
+
+    stateMachine->postEvent(new Ev_TestEventTwo());
+    QTestEventLoop::instance().enterLoop(1);
+
+    stateMachine->postEvent(new Ev_TestEventThree());
+    QTestEventLoop::instance().enterLoop(1);
+
+    QCOMPARE(spy.count(), 1);
+}
 
 //------------------------------------------------------------------------------
 void ExFsmSmokeTests::check_MultiEventTransition()

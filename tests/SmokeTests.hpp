@@ -31,6 +31,7 @@ private Q_SLOTS:
     void check_UnexpectedEventHandler();
     void check_RePostOfNotSuitableEvents();
     void check_MultiEventTransition();
+    void check_ConditionalTransition();
 
 };
 
