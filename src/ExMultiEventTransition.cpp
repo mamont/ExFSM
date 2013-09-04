@@ -12,7 +12,8 @@ ExMultiEventTransition::ExMultiEventTransition(QObject * parent, QList<QEvent::T
 {
     if(m_events.isEmpty())
     {
-        LOG_W("ExMultiEventTransition") << "event types list is empty. Emtpy won't ever be triggered";
+        LOG_W("ExMultiEventTransition") << "event types list is empty. Emtpy won't ever be triggered - "
+                                            << Q_FUNC_INFO << " File: " << __FILE__ << ":" << __LINE__;
     }
 }
 
