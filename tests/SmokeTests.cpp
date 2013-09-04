@@ -120,7 +120,9 @@ void ExFsmSmokeTests::check_ConditionalTransition()
 
     stateMachine->setInitialState(initialState);
 
-    new ExEventTransition(this, Ev_TestEventOne::eventType(), initialState, middleState);
+    new ExEventTransition(this, Ev_TestEventOne::eventType(), initialState, middleState
+                          , ExTransitionActionsSequence()
+                            << ExTransitionAction(&m_test, SLOT(doTest1())));
 
     new ExConditionalTransition(this
                                        , Ev_TestEventTwo::eventType()
@@ -132,7 +134,9 @@ void ExFsmSmokeTests::check_ConditionalTransition()
                                        , Ev_TestEventThree::eventType()
                                        , middleState
                                        , finalState
-                                       , [this](QEvent * ev) { return true; });
+                                       , [this](QEvent * ev) { return true; }
+                                       , ExTransitionActionsSequence()
+                                         << ExTransitionAction(&m_test, SLOT(doTest2())));
 
     QSignalSpy spy(finalState, SIGNAL(entered()));
 

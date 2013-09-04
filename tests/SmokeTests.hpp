@@ -20,9 +20,25 @@
 #include <QtCore/QObject>
 #include <QtTest/QtTest>
 
+class MyTest : public QObject
+{
+    Q_OBJECT
+public:
+
+private Q_SLOTS:
+
+    void doTest1()
+    {qDebug() << "doTest1()";}
+    void doTest2()
+    {qDebug() << "doTest2()";}
+
+};
+
+
 class ExFsmSmokeTests : public QObject
 {
     Q_OBJECT
+    MyTest m_test;
 public:        
     
 private Q_SLOTS:
