@@ -120,9 +120,7 @@ void ExFsmSmokeTests::check_ConditionalTransition()
 
     stateMachine->setInitialState(initialState);
 
-    new ExEventTransition(this, Ev_TestEventOne::eventType(), initialState, middleState
-                          , ExTransitionActionsSequence()
-                            << ExTransitionAction(&m_test, SLOT(doTest1())));
+    new ExEventTransition(this, Ev_TestEventOne::eventType(), initialState, middleState);
 
     new ExConditionalTransition(this
                                        , Ev_TestEventTwo::eventType()
@@ -134,9 +132,7 @@ void ExFsmSmokeTests::check_ConditionalTransition()
                                        , Ev_TestEventThree::eventType()
                                        , middleState
                                        , finalState
-                                       , [this](QEvent * ev) { return true; }
-                                       , ExTransitionActionsSequence()
-                                         << ExTransitionAction(&m_test, SLOT(doTest2())));
+                                       , [this](QEvent * ev) { return true; });
 
     QSignalSpy spy(finalState, SIGNAL(entered()));
 
@@ -151,6 +147,51 @@ void ExFsmSmokeTests::check_ConditionalTransition()
 
     stateMachine->postEvent(new Ev_TestEventThree());
     QTestEventLoop::instance().enterLoop(1);
+
+    QCOMPARE(spy.count(), 1);
+}
+
+void ExFsmSmokeTests::check_Actions()
+{
+    QScopedPointer<ExStateMachine> stateMachine(new ExStateMachine());
+
+    ExState * initialState = new ExState("Initial State");
+    ExState * middleState = new ExState("Middle State");
+    ExState * finalState = new ExState("Final State");
+
+    stateMachine->addState(initialState);
+    stateMachine->addState(middleState);
+    stateMachine->addState(finalState);
+
+    stateMachine->setInitialState(initialState);
+
+    new ExEventTransition(this, Ev_TestEventOne::eventType(), initialState, middleState
+                          , ExTransitionActionsSequence()
+                            << ExTransitionAction(&m_test, SLOT(doTest())));
+
+    new ExConditionalTransition(this
+                                       , Ev_TestEventTwo::eventType()
+                                       , middleState
+                                       , finalState
+                                       , [this](QEvent * ev) { return true; }
+                                       , ExTransitionActionsSequence()
+                                         << ExTransitionAction(&m_test, SLOT(doTest())));
+
+    QSignalSpy spy(finalState, SIGNAL(entered()));
+
+    stateMachine->start();
+    QTestEventLoop::instance().enterLoop(1);
+
+    stateMachine->postEvent(new Ev_TestEventOne());
+    QTestEventLoop::instance().enterLoop(1);
+    QCOMPARE(m_test.isCalled(), true);
+    m_test.clear();
+
+    stateMachine->postEvent(new Ev_TestEventTwo());
+    QTestEventLoop::instance().enterLoop(1);
+    QCOMPARE(m_test.isCalled(), true);
+    m_test.clear();
+
 
     QCOMPARE(spy.count(), 1);
 }

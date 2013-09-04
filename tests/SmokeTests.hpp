@@ -23,14 +23,22 @@
 class MyTest : public QObject
 {
     Q_OBJECT
+    bool m_is_called;
 public:
+    explicit MyTest()
+        : m_is_called(false)
+    {}
+
+    void clear()
+    {m_is_called = false;}
+
+    bool isCalled()
+    {return m_is_called;}
 
 private Q_SLOTS:
 
-    void doTest1()
-    {qDebug() << "doTest1()";}
-    void doTest2()
-    {qDebug() << "doTest2()";}
+    void doTest()
+    {m_is_called = true;}
 
 };
 
@@ -48,6 +56,7 @@ private Q_SLOTS:
     void check_RePostOfNotSuitableEvents();
     void check_MultiEventTransition();
     void check_ConditionalTransition();
+    void check_Actions();
 
 };
 
