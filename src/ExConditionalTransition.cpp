@@ -9,7 +9,7 @@ ExConditionalTransition::ExConditionalTransition(QObject * parent
                                                 , QState * target
                                                 , std::function<bool(QEvent * )> const& condition
                                                 , ExTransitionActionsSequence const& actions)
-    : ExEventTransition(parent, type, source, target)
+    : ExEventTransition(parent, type, source, target, actions)
     , m_cond(condition)
 {
     ;
