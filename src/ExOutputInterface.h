@@ -3,13 +3,17 @@
 
 #include <QtCore/QStateMachine>
 
+#include "ExCommon.h"
+
 namespace ExFSM {
 
 class ExEvent;
 
-class ExOutputInterface
+class EX_FSM_EXPORT ExOutputInterface
 {
 public:
+    virtual ~ExOutputInterface(){}
+
     virtual void putEvent(QEvent * event, QStateMachine::EventPriority = QStateMachine::NormalPriority) = 0;
     virtual void putEvent(ExEvent * event, QStateMachine::EventPriority = QStateMachine::NormalPriority) = 0;
 
