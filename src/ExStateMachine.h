@@ -1,7 +1,7 @@
 #ifndef __EX_FSM_STATEMACHINE_H__
 #define __EX_FSM_STATEMACHINE_H__
 
-#include <QtCore/QStateMachine>
+#include "ExOutputInterface.h"
 #include "ExCommon.h"
 
 namespace ExFSM {
@@ -9,7 +9,7 @@ namespace ExFSM {
 class ExEvent;
 class ExFlag;
 
-class EX_FSM_EXPORT ExStateMachine : public QStateMachine
+class EX_FSM_EXPORT ExStateMachine : public QStateMachine, public ExOutputInterface
 {
     Q_OBJECT
 
@@ -19,8 +19,8 @@ public:
 
     virtual bool isFlagActive(ExFlag const& flags) const;
 
-    virtual void postEvent(QEvent * event, EventPriority = NormalPriority);
-    virtual void postEvent(ExEvent * event, EventPriority = NormalPriority);
+    virtual void putEvent(QEvent * event, EventPriority = NormalPriority) override;
+    virtual void putEvent(ExEvent * event, EventPriority = NormalPriority) override;
 
 protected:
     virtual void beginSelectTransitions(QEvent *event);

@@ -6,7 +6,7 @@ namespace ExFSM {
 
 ExEvent * ExEvent::fromQEvent(QEvent * ev)
 {
-    QStateMachine::WrappedEvent * wrappedEvent = dynamic_cast<QStateMachine::WrappedEvent *>(ev);
+    QStateMachine::WrappedEvent * wrappedEvent = static_cast<QStateMachine::WrappedEvent *>(ev);
     if(!wrappedEvent)
         return 0;
 
@@ -14,7 +14,7 @@ ExEvent * ExEvent::fromQEvent(QEvent * ev)
     if(!rawEvent)
         return 0;
 
-    ExEvent * exEvent = dynamic_cast<ExEvent *>(rawEvent);
+    ExEvent * exEvent = static_cast<ExEvent *>(rawEvent);
     return exEvent;
 }
 

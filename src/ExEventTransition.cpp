@@ -134,7 +134,7 @@ bool ExEventTransition::eventTest(QEvent * ev)
         return res;
     }
 
-    QStateMachine::WrappedEvent * wrapped = dynamic_cast<QStateMachine::WrappedEvent *>(ev);
+    QStateMachine::WrappedEvent * wrapped = static_cast<QStateMachine::WrappedEvent *>(ev);
     Q_ASSERT(wrapped);
 
 	QEvent * rawEvent = wrapped->event();
@@ -161,7 +161,7 @@ void ExEventTransition::onTransition(QEvent *event)
     QEvent * ev = event;
     if(event->type() == QEvent::StateMachineWrapped)
     {
-        QStateMachine::WrappedEvent * wrapped = dynamic_cast<QStateMachine::WrappedEvent *>(event);
+        QStateMachine::WrappedEvent * wrapped = static_cast<QStateMachine::WrappedEvent *>(event);
         Q_ASSERT(wrapped);
 
         ev = wrapped->event();

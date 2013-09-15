@@ -36,7 +36,7 @@ void ExFsmSmokeTests::check_EventTransition()
     stateMachine->start();
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventOne());
+    stateMachine->putEvent(new Ev_TestEventOne());
     QTestEventLoop::instance().enterLoop(1);
 
     QCOMPARE(spy.count(), 1);
@@ -62,7 +62,7 @@ void ExFsmSmokeTests::check_UnexpectedEventHandler()
 
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventTwo());
+    stateMachine->putEvent(new Ev_TestEventTwo());
     QTestEventLoop::instance().enterLoop(1);
 
     QCOMPARE(spy.count(), 1);
@@ -94,10 +94,10 @@ void ExFsmSmokeTests::check_RePostOfNotSuitableEvents()
     stateMachine->start();
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventTwo());
+    stateMachine->putEvent(new Ev_TestEventTwo());
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventOne());
+    stateMachine->putEvent(new Ev_TestEventOne());
     QTestEventLoop::instance().enterLoop(1);
     
     QCOMPARE(spy.count(), 1);
@@ -139,13 +139,13 @@ void ExFsmSmokeTests::check_ConditionalTransition()
     stateMachine->start();
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventOne());
+    stateMachine->putEvent(new Ev_TestEventOne());
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventTwo());
+    stateMachine->putEvent(new Ev_TestEventTwo());
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventThree());
+    stateMachine->putEvent(new Ev_TestEventThree());
     QTestEventLoop::instance().enterLoop(1);
 
     QCOMPARE(spy.count(), 1);
@@ -182,12 +182,12 @@ void ExFsmSmokeTests::check_Actions()
     stateMachine->start();
     QTestEventLoop::instance().enterLoop(1);
 
-    stateMachine->postEvent(new Ev_TestEventOne());
+    stateMachine->putEvent(new Ev_TestEventOne());
     QTestEventLoop::instance().enterLoop(1);
     QCOMPARE(m_test.isCalled(), true);
     m_test.clear();
 
-    stateMachine->postEvent(new Ev_TestEventTwo());
+    stateMachine->putEvent(new Ev_TestEventTwo());
     QTestEventLoop::instance().enterLoop(1);
     QCOMPARE(m_test.isCalled(), true);
     m_test.clear();
@@ -219,12 +219,12 @@ void ExFsmSmokeTests::check_MultiEventTransition()
 
     QSignalSpy spy(finalState, SIGNAL(entered()));
 
-    stateMachine->postEvent(new Ev_TestEventTwo());
+    stateMachine->putEvent(new Ev_TestEventTwo());
     QTestEventLoop::instance().enterLoop(1);
 
     QCOMPARE(spy.count(), 0);
 
-    stateMachine->postEvent(new Ev_TestEventOne());
+    stateMachine->putEvent(new Ev_TestEventOne());
     QTestEventLoop::instance().enterLoop(1);
 
     QCOMPARE(spy.count(), 1);

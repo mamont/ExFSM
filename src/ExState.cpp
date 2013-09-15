@@ -66,11 +66,11 @@ void ExState::onEntry( QEvent* e )
     // Print out the state we are entering and it's parents
 #ifdef _EX_FSM_PRINT_INFO_
     QString state = name();
-    ExState* parent = dynamic_cast<ExState*>( parentState() );
+    ExState* parent = qobject_cast<ExState*>( parentState() );
     while ( parent != 0 )
     {
         state = parent->name() + "->" + state;
-        parent = dynamic_cast<ExState*>( parent->parentState() );
+        parent = qobject_cast<ExState*>( parent->parentState() );
     }
 
     LOG_D("ExState") << prefix() << " >>> Entering state:" << state;
@@ -85,11 +85,11 @@ void ExState::onExit( QEvent* e )
     // Print out the state we are exiting and it's parents
 #ifdef _EX_FSM_PRINT_INFO_
     QString state = name();
-    ExState* parent = dynamic_cast<ExState*>( parentState() );
+    ExState* parent = qobject_cast<ExState*>( parentState() );
     while ( parent != 0 )
     {
         state = parent->name() + "->" + state;
-        parent = dynamic_cast<ExState*>( parent->parentState() );
+        parent = qobject_cast<ExState*>( parent->parentState() );
     }
     LOG_D("ExState") << prefix() << " <<< Exiting state:" << state;
 #endif
@@ -101,7 +101,7 @@ void ExState::onExit( QEvent* e )
 #ifdef _EX_FSM_PRINT_INFO_
         LOG_D("ExState") << name() << " post: " << savedEvent.type();
 #endif
-        static_cast<ExStateMachine*>(machine())->postEvent(new QEvent(savedEvent));
+        static_cast<ExStateMachine*>(machine())->putEvent(new QEvent(savedEvent));
     }
     static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents.clear();
 }

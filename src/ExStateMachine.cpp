@@ -29,7 +29,7 @@ bool ExStateMachine::isFlagActive(ExFlag const& flag) const
 
     Q_FOREACH(QAbstractState const * state, states)
     {
-        ExState const * custate = dynamic_cast<ExState const * >(state);
+        ExState const * custate = qobject_cast<ExState const * >(state);
         if(!custate)
             continue;
 
@@ -40,17 +40,17 @@ bool ExStateMachine::isFlagActive(ExFlag const& flag) const
 }
 
 //--------------------------------------------------------------------------------------------------
-void ExStateMachine::postEvent(QEvent * event, EventPriority priority)
+void ExStateMachine::putEvent(QEvent * event, EventPriority priority)
 {
     const int type = event->type();
     if(type > QEvent::User)
-        postEvent(new ExWrappedEvent(event), priority);
+        putEvent(new ExWrappedEvent(event), priority);
     else
         QStateMachine::postEvent(event, priority);
 }
 
 //--------------------------------------------------------------------------------------------------
-void ExStateMachine::postEvent(ExEvent * event, EventPriority priority)
+void ExStateMachine::putEvent(ExEvent * event, EventPriority priority)
 {
     QStateMachine::postEvent(new ExWrappedEvent(event), priority);
 }
