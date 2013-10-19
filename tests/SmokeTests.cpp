@@ -132,7 +132,11 @@ void ExFsmSmokeTests::check_ConditionalTransition()
                                        , Ev_TestEventThree::eventType()
                                        , middleState
                                        , finalState
-                                       , [this](QEvent * ev) { return true; });
+                                       , [this](QEvent * ev) {
+                                            Ev_TestEventThree* answer = dynamic_cast<Ev_TestEventThree*> (ev);
+                                            Q_ASSERT_X(answer, "Error", "Received wrong event");
+                                            return true; }
+                                );
 
     QSignalSpy spy(finalState, SIGNAL(entered()));
 

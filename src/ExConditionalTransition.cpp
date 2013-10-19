@@ -1,4 +1,6 @@
 #include "ExConditionalTransition.h"
+#include <QtCore/QStateMachine>
+
 
 namespace ExFSM {
 
@@ -25,7 +27,12 @@ bool ExConditionalTransition::eventTest(QEvent *event)
     if(!ExEventTransition::eventTest(event))
         return false;
 
-    return m_cond(event);
+    QStateMachine::WrappedEvent * wrapped = dynamic_cast<QStateMachine::WrappedEvent *>(event);
+    Q_ASSERT(wrapped);
+
+    QEvent * rawEvent = wrapped->event();
+
+    return m_cond(rawEvent);
 }
 
 
