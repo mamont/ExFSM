@@ -14,6 +14,8 @@ public:
     static const QEvent::Type None;
 
     explicit ExEvent(QEvent::Type type = QEvent::None) : QEvent(type) {;}
+    virtual QEvent::Type myEventType() = 0;
+    virtual ~ExEvent()  {;}
 
     static ExEvent * fromQEvent(QEvent *);
 };
@@ -29,6 +31,11 @@ public:
     {
         static QEvent::Type type = static_cast<QEvent::Type>(registerEventType());
         return type;
+    }
+
+    virtual QEvent::Type myEventType()
+    {
+        return eventType();
     }
 };
 

@@ -25,12 +25,6 @@ public:
 protected:
     virtual void beginSelectTransitions(QEvent *event);
     virtual void endSelectTransitions(QEvent *event);
-
-    /*
-    virtual void beginMicrostep(QEvent *event);
-    virtual void endMicrostep(QEvent *event);
-    */
-
 };
 
 } // ExFSM

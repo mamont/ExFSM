@@ -6,6 +6,9 @@ namespace ExFSM {
 
 ExEvent * ExEvent::fromQEvent(QEvent * ev)
 {
+    if(!ev)
+        return 0;
+
     QStateMachine::WrappedEvent * wrappedEvent = static_cast<QStateMachine::WrappedEvent *>(ev);
     if(!wrappedEvent)
         return 0;

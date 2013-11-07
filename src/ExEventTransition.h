@@ -39,7 +39,7 @@ protected:
 
 public:
     explicit ExTransitionActionsSequence();
-    explicit ExTransitionActionsSequence(ExTransitionAction const &);
+    ExTransitionActionsSequence(ExTransitionAction const &);
     ExTransitionActionsSequence & operator<<(ExTransitionAction const &);
 
     QList<ExTransitionAction> const & actions() const { return m_actions; }
