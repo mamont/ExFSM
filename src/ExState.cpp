@@ -12,7 +12,7 @@ struct ExStatePrivate
     ExFlags m_flags;
 
     QSet<QEvent::Type> m_savedEventTypes;
-    QList<QEvent> m_savedEvents;
+    QList<ExEvent*> m_savedEvents;
 
     ExStatePrivate(QString const& name, QString const& prefix)
         : m_name(name)
@@ -96,12 +96,12 @@ void ExState::onExit( QEvent* e )
 
     QState::onExit(e);
 
-    Q_FOREACH(QEvent const & savedEvent, static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents)
+    Q_FOREACH(ExEvent* const & savedEvent, static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents)
     {
 #ifdef _EX_FSM_PRINT_INFO_
-        LOG_D("ExState") << name() << " post: " << savedEvent.type();
+        LOG_D("ExState") << name() << " post: " << savedEvent->type();
 #endif
-        static_cast<ExStateMachine*>(machine())->putEvent(new QEvent(savedEvent));
+        static_cast<ExStateMachine*>(machine())->putEvent(savedEvent);
     }
     static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents.clear();
 }
@@ -109,7 +109,8 @@ void ExState::onExit( QEvent* e )
 //-----------------------------------------------------------------------------
 void ExState::onUnexpectedEvent( QEvent * e )
 {
-    ExEvent * exEvent = ExEvent::fromQEvent(e);
+    ExEvent* exEvent = ExEvent::fromQEvent(e);
+
     if(!exEvent)
         return;
 
@@ -122,7 +123,7 @@ void ExState::onUnexpectedEvent( QEvent * e )
 #ifdef _EX_FSM_PRINT_INFO_
         LOG_D("ExState") << name() << " Save unexpected event : " << exEvent->type();
 #endif
-        static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents.append(*exEvent);
+        static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents.append(exEvent->clone());
     }
     else
     {

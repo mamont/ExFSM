@@ -18,6 +18,8 @@ public:
     virtual ~ExEvent()  {;}
 
     static ExEvent * fromQEvent(QEvent *);
+
+    virtual ExEvent* clone() = 0;
 };
 
 
@@ -36,6 +38,11 @@ public:
     virtual QEvent::Type myEventType()
     {
         return eventType();
+    }
+
+    ExEvent* clone() override
+    {
+        return new T( *(static_cast<T*>(this)) );
     }
 };
 
