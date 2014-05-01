@@ -20,6 +20,7 @@ public:
     static ExEvent * fromQEvent(QEvent *);
 
     virtual ExEvent* clone() = 0;
+    virtual QString name() = 0;
 };
 
 
@@ -43,6 +44,11 @@ public:
     ExEvent* clone() override
     {
         return new T( *(static_cast<T*>(this)) );
+    }
+
+    virtual QString name() override
+    {
+        return typeid(T).name();
     }
 };
 

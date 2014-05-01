@@ -61,8 +61,6 @@ void ExState::unsetFlags(ExFlags const & flags)
 //-----------------------------------------------------------------------------
 void ExState::onEntry( QEvent* e )
 {
-    //Q_EMIT entered(e);
-
     // Print out the state we are entering and it's parents
 #ifdef _EX_FSM_PRINT_INFO_
     QString state = name();
@@ -73,7 +71,7 @@ void ExState::onEntry( QEvent* e )
         parent = qobject_cast<ExState*>( parent->parentState() );
     }
 
-    LOG_D("ExState") << prefix() << " >>> Entering state:" << state;
+    LOG_D("ExState") << prefix() << " >>> Entering state: '" << state << "'";
 #endif
 
     QState::onEntry(e);
@@ -91,7 +89,7 @@ void ExState::onExit( QEvent* e )
         state = parent->name() + "->" + state;
         parent = qobject_cast<ExState*>( parent->parentState() );
     }
-    LOG_D("ExState") << prefix() << " <<< Exiting state:" << state;
+    LOG_D("ExState") << prefix() << " <<< Exiting state: '" << state << "'";
 #endif
 
     QState::onExit(e);
@@ -99,7 +97,7 @@ void ExState::onExit( QEvent* e )
     Q_FOREACH(ExEvent* const & savedEvent, static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents)
     {
 #ifdef _EX_FSM_PRINT_INFO_
-        LOG_D("ExState") << name() << " post: " << savedEvent->type();
+        LOG_D("ExState") << prefix() << " - " << name() << ": Post saved event: '" << savedEvent->name() << "'";
 #endif
         static_cast<ExStateMachine*>(machine())->putEvent(savedEvent);
     }
@@ -115,13 +113,13 @@ void ExState::onUnexpectedEvent( QEvent * e )
         return;
 
 #ifdef _EX_FSM_PRINT_INFO_
-    LOG_D("ExState") << name() << " unexpected event : " << exEvent->type();
+    LOG_D("ExState") << prefix() << " - " << name() << ": Unexpected event: '" << exEvent->name() << "'";
 #endif
 
     if((static_cast<ExStatePrivate*>(m_pImpl)->m_savedEventTypes.contains(exEvent->type())))
     {
 #ifdef _EX_FSM_PRINT_INFO_
-        LOG_D("ExState") << name() << " Save unexpected event : " << exEvent->type();
+        LOG_D("ExState") << prefix() << " - " << name() << ": Save unexpected event: '" << exEvent->name() << "'";
 #endif
         static_cast<ExStatePrivate*>(m_pImpl)->m_savedEvents.append(exEvent->clone());
     }

@@ -5,6 +5,7 @@
 #include "ExEvent.h"
 #include "ExFlags.h"
 #include "ExState.h"
+#include "ExLogger.h"
 
 namespace ExFSM {
 
@@ -52,6 +53,10 @@ void ExStateMachine::putEvent(QEvent * event, EventPriority priority)
 //--------------------------------------------------------------------------------------------------
 void ExStateMachine::putEvent(ExEvent * event, EventPriority priority)
 {
+#ifdef _EX_FSM_PRINT_INFO_
+    LOG_D("ExStateMachine") << "put event: '" << event->name() << "'";
+#endif
+
     QStateMachine::postEvent(new ExWrappedEvent(event), priority);
 }
 
@@ -85,7 +90,25 @@ void ExStateMachine::endSelectTransitions(QEvent *event)
         }
         else
         {
-            //qDebug() << "Accepted!";
+#ifdef _EX_FSM_PRINT_INFO_
+            ExEvent* exEvent = ExEvent::fromQEvent(event);
+
+            if(exEvent)
+            {
+                QString stateName;
+                QSet<QAbstractState*> const config = configuration();
+                QSet<QAbstractState*>::const_iterator it = config.constBegin();
+                for(; it != config.constEnd(); ++it)
+                {
+                    ExState * exstate = qobject_cast<ExState *>(*it);
+                    if(!exstate)
+                        continue;
+                    stateName = exstate->name() + (stateName.isEmpty() ? "" : "->") + stateName;
+                }
+
+                LOG_D("ExStateMachine") << "In state '" << stateName << "' event '" << exEvent->name() << "' has been accepted";
+            }
+#endif
         }
     }
 
