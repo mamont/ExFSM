@@ -1,6 +1,8 @@
 #ifndef __EX_FSM_EVENT_H__
 #define __EX_FSM_EVENT_H__
 
+#include <typeinfo>
+
 #include <QtCore/QEvent>
 #include <QtCore/QStateMachine>
 

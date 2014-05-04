@@ -26,8 +26,15 @@ public:
 #else
     static constexpr QState * None = nullptr;
 #endif
+
+    enum ChildMode {
+        ExclusiveStates = 0,
+        ParallelStates = 1
+    };
+
     explicit ExState(QString const& name = QString::null, QString const& prefix = QString::null);
     explicit ExState(QState * parent, QString const& name = QString::null, QString const& prefix = QString::null);
+    explicit ExState(ChildMode mode = ExclusiveStates, QState * parent = NULL, QString const& name = QString::null, QString const& prefix = QString::null);
     virtual ~ExState();
 
     QString const & name() const;

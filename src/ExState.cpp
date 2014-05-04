@@ -41,6 +41,14 @@ ExState::ExState(QState * parent, QString const& name, QString const& prefix )
 }
 
 //-----------------------------------------------------------------------------
+ExState::ExState(ChildMode mode, QState * parent, QString const& name, QString const& prefix)
+    : QState(QState::ChildMode(mode), parent)
+    , m_pImpl(new ExStatePrivate(name, prefix))
+{
+    ;
+}
+
+//-----------------------------------------------------------------------------
 ExState::~ExState()
 {
     delete static_cast<ExStatePrivate*>(m_pImpl);
